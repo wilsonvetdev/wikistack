@@ -2,24 +2,28 @@ const express = require("express")
 const morgan = require("morgan")
 const router = express.Router()
 const { db, Page, User } = require('./models')
-const layout = require("./views/layout")
+const wikiRouter = require('./routes/wiki');
+const userRouter = require('./routes/users');
 
 const app = express()
 app.use(morgan("dev"))
 app.use(express.static(__dirname + "/public"))
+router.use(express.urlencoded({ extended: false }))
+
+// parses json bodies
+app.use(express.json())
 
 db.authenticate()
   .then(() => {
     console.log('connected to the database');
   })
 
-router.use(express.urlencoded({ extended: false }))
 
-// parses json bodies
-app.use(express.json())
+app.use('/wiki', wikiRouter )
+// app.use('/users', userRouter )
 
-app.get("/", (req, res) => {
-  res.send(layout(''));
+app.get('/', (req, res, next) => {
+  res.redirect('/wiki')
 })
 
 const PORT = 8080;
