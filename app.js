@@ -1,14 +1,12 @@
-const express = require("express")
-const morgan = require("morgan")
-const router = express.Router()
-const { db, Page, User } = require('./models')
+const express = require('express')
+const morgan = require('morgan')
+const { db } = require('./models')
 const wikiRouter = require('./routes/wiki');
 const userRouter = require('./routes/users');
 
 const app = express()
-app.use(morgan("dev"))
-app.use(express.static(__dirname + "/public"))
-router.use(express.urlencoded({ extended: false }))
+app.use(morgan('dev'))
+app.use(express.static(__dirname + '/public'))
 
 // parses json bodies
 app.use(express.json())
